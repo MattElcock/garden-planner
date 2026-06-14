@@ -1,0 +1,8 @@
+# <type>(<scope>): <subject>
+# type: feat, fix, chore, docs, style, refactor, perf, test
+# scope: Linear ticket ID (e.g., GAR-34)
+# subject: imperative, no period
+
+# <body> - optional, detailed explanation
+
+# <footer> - optional, closing keywords: Fixes, Resolves, Closes, Implements
