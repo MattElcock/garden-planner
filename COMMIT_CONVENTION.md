@@ -60,4 +60,3 @@ Resolves GAR-34
 ## Git Template
 
 A `.gitmessage` template is configured locally to help with this format.
-
