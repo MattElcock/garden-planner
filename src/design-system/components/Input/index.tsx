@@ -1,13 +1,13 @@
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-interface InputProps {
-  control: Control;
-  name: string;
+interface InputProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   label: string;
 }
 
-const Input = ({ control, label, name }: InputProps) => {
+const Input = <T extends FieldValues>({ control, label, name }: InputProps<T>) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

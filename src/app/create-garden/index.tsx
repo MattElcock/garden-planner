@@ -1,10 +1,25 @@
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { Button, View } from 'react-native';
 import { Input } from '../../design-system/components/Input';
 import { SplitToggle } from '../../design-system/components/SplitToggle';
+import { useCreateGarden } from '../../hooks/useCreateGarden';
+
+interface FormData {
+  gardenName: string;
+  units: 'metric' | 'imperial';
+}
 
 export default function CreateGarden() {
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm<FormData>();
+
+  const { execute } = useCreateGarden();
+
+  const onSubmit = (data: FormData) => {
+    execute({
+      name: data.gardenName,
+      units: data.units,
+    });
+  };
 
   return (
     <View>
@@ -18,6 +33,7 @@ export default function CreateGarden() {
           { label: 'Imperial', value: 'imperial' },
         ]}
       />
+      <Button title="Create Garden" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }

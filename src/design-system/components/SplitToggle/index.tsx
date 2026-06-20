@@ -1,4 +1,4 @@
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Option {
@@ -6,14 +6,19 @@ interface Option {
   value: string;
 }
 
-interface SplitToggleProps {
-  control: Control;
-  name: string;
+interface SplitToggleProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
   label: string;
   options: Option[];
 }
 
-const SplitToggle = ({ control, label, name, options }: SplitToggleProps) => {
+const SplitToggle = <T extends FieldValues>({
+  control,
+  label,
+  name,
+  options,
+}: SplitToggleProps<T>) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
