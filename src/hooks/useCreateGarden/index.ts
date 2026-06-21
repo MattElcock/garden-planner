@@ -1,5 +1,5 @@
+import db from '@/db/database';
 import * as Crypto from 'expo-crypto';
-import db from '../../db/database';
 
 interface CreateGardenInput {
   name: string;

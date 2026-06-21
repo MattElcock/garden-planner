@@ -1,8 +1,9 @@
+import { Input } from '@/design-system/components/Input';
+import { SplitToggle } from '@/design-system/components/SplitToggle';
+import { useCreateGarden } from '@/hooks/useCreateGarden';
+import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { Button, View } from 'react-native';
-import { Input } from '../../design-system/components/Input';
-import { SplitToggle } from '../../design-system/components/SplitToggle';
-import { useCreateGarden } from '../../hooks/useCreateGarden';
 
 interface FormData {
   gardenName: string;
@@ -10,8 +11,9 @@ interface FormData {
 }
 
 export default function CreateGarden() {
-  const { control, handleSubmit } = useForm<FormData>();
+  const router = useRouter();
 
+  const { control, handleSubmit } = useForm<FormData>();
   const { execute } = useCreateGarden();
 
   const onSubmit = (data: FormData) => {
@@ -19,6 +21,8 @@ export default function CreateGarden() {
       name: data.gardenName,
       units: data.units,
     });
+
+    router.push('/');
   };
 
   return (
