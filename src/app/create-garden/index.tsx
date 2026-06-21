@@ -7,7 +7,9 @@ import { Button, StyleSheet, View } from 'react-native';
 
 interface FormData {
   gardenName: string;
-  units: 'metric' | 'imperial';
+  units: 'meters' | 'feet';
+  length: number;
+  width: number;
 }
 
 export default function CreateGarden() {
@@ -20,6 +22,8 @@ export default function CreateGarden() {
     execute({
       name: data.gardenName,
       units: data.units,
+      width: data.width,
+      length: data.length,
     });
 
     router.push('/');
@@ -34,11 +38,32 @@ export default function CreateGarden() {
           label="Units"
           rules={{ required: 'Required' }}
           options={[
-            { label: 'Metric', value: 'metric' },
-            { label: 'Imperial', value: 'imperial' },
+            { label: 'Meters', value: 'meters' },
+            { label: 'Feet', value: 'feet' },
           ]}
         />
-        <Button title="Create Garden" onPress={methods.handleSubmit(onSubmit)} />
+        <Input
+          keyboardType="number-pad"
+          label="Length"
+          name="length"
+          rules={{
+            required: 'Required',
+            validate: (value) => !isNaN(Number(value)) || 'Length must be a number',
+          }}
+        />
+        <Input
+          keyboardType="number-pad"
+          label="Width"
+          name="width"
+          rules={{
+            required: 'Required',
+            validate: (value) => !isNaN(Number(value)) || 'Width must be a number',
+          }}
+        />
+        <Button
+          title="Create Garden"
+          onPress={methods.handleSubmit(onSubmit, (errors) => console.log(errors))}
+        />
       </View>
     </FormProvider>
   );

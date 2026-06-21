@@ -1,19 +1,29 @@
 import { fontSizes, textColours } from '@/design-system/styles/typography';
-import { Controller, FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Controller,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  useFormContext,
+  useFormState,
+} from 'react-hook-form';
+import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from 'react-native';
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   rules?: RegisterOptions<T>;
+  keyboardType?: KeyboardTypeOptions;
 }
 
-const Input = <T extends FieldValues>({ label, name, rules }: InputProps<T>) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<T>();
-
+const Input = <T extends FieldValues>({
+  label,
+  name,
+  rules,
+  keyboardType = 'ascii-capable',
+}: InputProps<T>) => {
+  const { control } = useFormContext<T>();
+  const { errors } = useFormState({ control, name });
   const error = errors[name];
 
   return (
@@ -24,7 +34,12 @@ const Input = <T extends FieldValues>({ label, name, rules }: InputProps<T>) => 
         name={name}
         rules={rules}
         render={({ field: { onChange, value } }) => (
-          <TextInput style={styles.input} value={value} onChangeText={onChange} />
+          <TextInput
+            keyboardType={keyboardType}
+            style={styles.input}
+            value={value}
+            onChangeText={onChange}
+          />
         )}
       />
       {error?.message && <Text style={styles.error}>{error.message.toString()}</Text>}

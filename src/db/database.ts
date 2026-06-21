@@ -8,6 +8,8 @@ export const initDatabase = () => {
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       units TEXT NOT NULL,
+      width REAL NOT NULL,
+      length REAL NOT NULL,
       created_at TEXT NOT NULL
     );
   `);

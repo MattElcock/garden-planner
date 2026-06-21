@@ -1,5 +1,12 @@
 import { fontSizes, textColours } from '@/design-system/styles/typography';
-import { Controller, FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  useFormContext,
+  useFormState,
+} from 'react-hook-form';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Option {
@@ -20,11 +27,8 @@ const SplitToggle = <T extends FieldValues>({
   options,
   rules,
 }: SplitToggleProps<T>) => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<T>();
-
+  const { control } = useFormContext<T>();
+  const { errors } = useFormState({ control, name });
   const error = errors[name];
 
   return (
