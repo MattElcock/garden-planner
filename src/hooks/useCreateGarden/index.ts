@@ -21,6 +21,8 @@ const useCreateGarden = () => {
     console.info(
       `Garden created with ID: ${id}, Name: ${data.name}, Units: ${data.units}, Width: ${data.width}, Length: ${data.length}, Created At: ${createdAt}`
     );
+
+    return id;
   };
 
   return { execute };

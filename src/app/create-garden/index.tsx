@@ -19,14 +19,14 @@ export default function CreateGarden() {
   const { execute } = useCreateGarden();
 
   const onSubmit = (data: FormData) => {
-    execute({
+    const gardenId = execute({
       name: data.gardenName,
       units: data.units,
       width: data.width,
       length: data.length,
     });
 
-    router.push(`/garden/${data.gardenName}`);
+    router.push(`/garden/${gardenId}`);
   };
 
   return (
