@@ -26,7 +26,7 @@ export default function CreateGarden() {
       length: data.length,
     });
 
-    router.push('/');
+    router.push(`/garden/${data.gardenName}`);
   };
 
   return (
@@ -71,6 +71,7 @@ export default function CreateGarden() {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 20,
     gap: 8,
   },
 });

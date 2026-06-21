@@ -13,7 +13,7 @@ export default function HomeScreen() {
   };
 
   const onGardenClick = (gardenId: string) => {
-    console.log(`Garden clicked: ${gardenId}`);
+    router.push(`/garden/${gardenId}`);
   };
 
   return (
@@ -37,6 +37,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   page: {
+    padding: 20,
     gap: 20,
   },
   header: {

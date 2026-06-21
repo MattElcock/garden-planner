@@ -1,18 +1,12 @@
 import db from '@/db/database';
+import { GardenDb } from '@/db/types';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-
-interface GardenDb {
-  id: string;
-  name: string;
-  units: 'metric' | 'imperial';
-  created_at: string;
-}
 
 interface Garden {
   id: string;
   name: string;
-  units: 'metric' | 'imperial';
+  units: 'meters' | 'feet';
   createdAt: Date;
 }
 

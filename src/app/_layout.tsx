@@ -8,9 +8,10 @@ export default () => {
   }, []);
 
   return (
-    <Stack screenOptions={{ contentStyle: { padding: 20 } }}>
+    <Stack>
       <Stack.Screen name="index" options={{ title: 'Home' }} />
-      <Stack.Screen name="create-garden" options={{ title: 'Create a garden' }} />
+      <Stack.Screen name="create-garden" options={{ headerShown: false }} />
+      <Stack.Screen name="garden/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 };
