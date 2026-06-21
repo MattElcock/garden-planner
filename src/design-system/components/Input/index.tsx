@@ -1,36 +1,45 @@
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { fontSizes, textColours } from '@/design-system/styles/typography';
+import { Controller, FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 interface InputProps<T extends FieldValues> {
-  control: Control<T>;
   name: Path<T>;
   label: string;
+  rules?: RegisterOptions<T>;
 }
 
-const Input = <T extends FieldValues>({ control, label, name }: InputProps<T>) => {
+const Input = <T extends FieldValues>({ label, name, rules }: InputProps<T>) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<T>();
+
+  const error = errors[name];
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <Controller
         control={control}
         name={name}
+        rules={rules}
         render={({ field: { onChange, value } }) => (
           <TextInput style={styles.input} value={value} onChangeText={onChange} />
         )}
       />
+      {error?.message && <Text style={styles.error}>{error.message.toString()}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    gap: 4,
   },
   label: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 6,
-    color: '#2c2c2c',
+    fontSize: fontSizes.text,
+    fontWeight: 'semibold',
+    color: textColours.base,
   },
   input: {
     borderWidth: 1,
@@ -38,9 +47,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: 16,
-    color: '#2c2c2c',
+    fontSize: fontSizes.text,
+    color: textColours.base,
     backgroundColor: '#fff',
+  },
+  error: {
+    color: textColours.error,
+    fontSize: fontSizes.textSmall,
   },
 });
 

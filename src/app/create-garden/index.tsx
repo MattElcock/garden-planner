@@ -2,8 +2,8 @@ import { Input } from '@/design-system/components/Input';
 import { SplitToggle } from '@/design-system/components/SplitToggle';
 import { useCreateGarden } from '@/hooks/useCreateGarden';
 import { useRouter } from 'expo-router';
-import { useForm } from 'react-hook-form';
-import { Button, View } from 'react-native';
+import { FormProvider, useForm } from 'react-hook-form';
+import { Button, StyleSheet, View } from 'react-native';
 
 interface FormData {
   gardenName: string;
@@ -13,7 +13,7 @@ interface FormData {
 export default function CreateGarden() {
   const router = useRouter();
 
-  const { control, handleSubmit } = useForm<FormData>();
+  const methods = useForm<FormData>();
   const { execute } = useCreateGarden();
 
   const onSubmit = (data: FormData) => {
@@ -26,18 +26,26 @@ export default function CreateGarden() {
   };
 
   return (
-    <View>
-      <Input control={control} label="Garden Name" name="gardenName" />
-      <SplitToggle
-        control={control}
-        name="units"
-        label="Units"
-        options={[
-          { label: 'Metric', value: 'metric' },
-          { label: 'Imperial', value: 'imperial' },
-        ]}
-      />
-      <Button title="Create Garden" onPress={handleSubmit(onSubmit)} />
-    </View>
+    <FormProvider {...methods}>
+      <View style={styles.container}>
+        <Input label="Garden Name" name="gardenName" rules={{ required: 'Required' }} />
+        <SplitToggle
+          name="units"
+          label="Units"
+          rules={{ required: 'Required' }}
+          options={[
+            { label: 'Metric', value: 'metric' },
+            { label: 'Imperial', value: 'imperial' },
+          ]}
+        />
+        <Button title="Create Garden" onPress={methods.handleSubmit(onSubmit)} />
+      </View>
+    </FormProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 8,
+  },
+});

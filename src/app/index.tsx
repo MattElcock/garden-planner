@@ -1,5 +1,5 @@
 import { Card } from '@/design-system/components/Card';
-import { headings } from '@/design-system/styles/headings';
+import { fontSizes } from '@/design-system/styles/typography';
 import { useListGardens } from '@/hooks/useListGardens';
 import { useRouter } from 'expo-router';
 import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: headings.h2,
+    fontSize: fontSizes.h2,
   },
   gardenList: {
     gap: 12,

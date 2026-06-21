@@ -1,4 +1,5 @@
-import { Control, Controller, FieldValues, Path } from 'react-hook-form';
+import { fontSizes, textColours } from '@/design-system/styles/typography';
+import { Controller, FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Option {
@@ -7,24 +8,32 @@ interface Option {
 }
 
 interface SplitToggleProps<T extends FieldValues> {
-  control: Control<T>;
   name: Path<T>;
   label: string;
   options: Option[];
+  rules?: RegisterOptions<T>;
 }
 
 const SplitToggle = <T extends FieldValues>({
-  control,
   label,
   name,
   options,
+  rules,
 }: SplitToggleProps<T>) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<T>();
+
+  const error = errors[name];
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <Controller
         control={control}
         name={name}
+        rules={rules}
         render={({ field: { onChange, value } }) => (
           <View style={styles.toggle}>
             {options.map((option, index) => (
@@ -47,19 +56,19 @@ const SplitToggle = <T extends FieldValues>({
           </View>
         )}
       />
+      {error?.message && <Text style={styles.error}>{error.message.toString()}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    gap: 4,
   },
   label: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 6,
-    color: '#2c2c2c',
+    fontSize: fontSizes.text,
+    fontWeight: 'semibold',
+    color: textColours.base,
   },
   toggle: {
     flexDirection: 'row',
@@ -82,12 +91,16 @@ const styles = StyleSheet.create({
     borderLeftColor: '#ccc',
   },
   optionText: {
-    fontSize: 16,
-    color: '#2c2c2c',
+    fontSize: fontSizes.text,
+    color: textColours.base,
   },
   optionTextActive: {
     color: '#fff',
     fontWeight: '600',
+  },
+  error: {
+    color: textColours.error,
+    fontSize: fontSizes.textSmall,
   },
 });
 
