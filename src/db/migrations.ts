@@ -1,0 +1,4 @@
+import migrations from '../../drizzle/migrations';
+
+export { migrations };
+export default migrations;

@@ -1,7 +1,9 @@
-import db from '@/db/database';
-import { GardenDb } from '@/db/types';
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { desc } from 'drizzle-orm/sql';
+import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+import { db } from '@/db/client';
+import { gardens } from '@/db/schema';
+
+import { useMemo } from 'react';
 
 interface Garden {
   id: string;
@@ -10,30 +12,20 @@ interface Garden {
   createdAt: Date;
 }
 
-const listGardens = () => {
-  const gardensDatabase = db.getAllSync<GardenDb>('SELECT * FROM gardens ORDER BY created_at DESC');
-
-  const gardens: Garden[] = gardensDatabase.map((garden) => ({
-    id: garden.id,
-    name: garden.name,
-    units: garden.units,
-    createdAt: new Date(garden.created_at),
-  }));
-
-  return gardens;
-};
-
 const useListGardens = () => {
-  const [gardens, setGardens] = useState<Garden[]>([]);
+  const { data: rows } = useLiveQuery(db.select().from(gardens).orderBy(desc(gardens.created_at)));
 
-  useFocusEffect(
-    useCallback(() => {
-      const gardens = listGardens();
-      setGardens(gardens);
-    }, [])
-  );
+  const mapped = useMemo(() => {
+    if (!rows) return [] as Garden[];
+    return rows.map((r: any) => ({
+      id: r.id,
+      name: r.name,
+      units: r.units,
+      createdAt: new Date(r.created_at),
+    }));
+  }, [rows]);
 
-  return { gardens };
+  return { gardens: mapped };
 };
 
 export { useListGardens };

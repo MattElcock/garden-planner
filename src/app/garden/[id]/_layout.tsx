@@ -7,7 +7,7 @@ export default () => {
 
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ title: garden.name }} />
+      <Stack.Screen name="index" options={{ title: garden?.name ?? 'Loading...' }} />
     </Stack>
   );
 };

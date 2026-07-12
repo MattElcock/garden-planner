@@ -5,9 +5,17 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function ViewGarden() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const {
-    garden: { units, width, length },
-  } = useGetGarden(id);
+  const { garden } = useGetGarden(id);
+
+  if (!garden) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  const { units, width, length } = garden;
 
   if (!width || !length || !units) {
     return (

@@ -1,32 +1,51 @@
 # Garden Planner
 
-A React Native mobile application built with Expo for planning and managing your garden.
+Garden Planner is a React Native app built with Expo and Expo Router. It uses Expo SQLite with Drizzle ORM for local data storage.
 
-## 📋 Requirements
+## Tech Stack
 
-- Node.js (v18 or higher)
-- npm (v9 or higher)
-- Android SDK and Android emulator, or physical Android device
-- Optional: Xcode and iOS simulator for iOS development
+- React Native + Expo
+- Expo Router
+- TypeScript
+- Expo SQLite
+- Drizzle ORM
+- Drizzle Kit for schema migrations
+- ESLint + Prettier
 
-## 🚀 Getting Started
+## Project Structure
 
-### Installation
+```text
+src/
+├── app/                  # Expo Router screens and layouts
+├── components/           # Reusable UI components
+├── db/                   # Database client, schema, and migration wiring
+├── design-system/        # Shared design system primitives
+├── hooks/                # Custom hooks for data access and mutations
+└── global.css            # Global app styles
 
-1. Clone the repository:
+drizzle/
+├── meta/                 # Drizzle migration metadata
+└── migrations.js         # Expo-compatible migration bundle
+```
 
-   ```bash
-   git clone git@github.com:MattElcock/garden-planner.git
-   cd garden-planner
-   ```
+## Getting Started
 
-2. Install dependencies:
+### Prerequisites
 
-   ```bash
-   npm install
-   ```
+- Node.js 18 or newer
+- npm 9 or newer
+- Android Studio / emulator, or a physical Android device
+- Optional: Xcode and an iOS simulator for iOS development
 
-### Running the Project
+### Install dependencies
+
+```bash
+git clone <your-repo-url>
+cd garden-planner
+npm install
+```
+
+### Run the app
 
 Start the Expo development server:
 
@@ -34,84 +53,56 @@ Start the Expo development server:
 npm start
 ```
 
-#### Android
-
-To run on Android emulator:
+Then choose one of the following:
 
 ```bash
 npm run android
 ```
 
-Or press `a` in the Expo CLI after running `npm start`.
-
-#### iOS
-
-To run on iOS simulator (macOS only):
-
 ```bash
 npm run ios
 ```
-
-Or press `i` in the Expo CLI after running `npm start`.
-
-#### Web
-
-To run on web:
 
 ```bash
 npm run web
 ```
 
-## 🏗️ Project Structure
+You can also press `a`, `i`, or `w` in the Expo CLI after the dev server starts.
 
+## Database and Migrations
+
+The app uses Drizzle ORM with Expo SQLite. The schema lives in [src/db/schema.ts](src/db/schema.ts), and the Expo-compatible migration bundle is generated into [drizzle/migrations.js](drizzle/migrations.js).
+
+Drizzle Kit generates SQL migration files for history and tooling, but the app consumes the Expo-ready bundle in [drizzle/migrations.js](drizzle/migrations.js) at runtime. The SQL files are not required by the app itself unless you want to inspect or keep a human-readable migration history.
+
+### Create a new migration
+
+When you change the database schema:
+
+1. Update the schema in [src/db/schema.ts](src/db/schema.ts)
+2. Generate a new migration:
+
+```bash
+npx drizzle-kit generate
 ```
-src/
-├── app/                 # Expo Router pages and navigation
-├── components/          # Reusable React components
-├── screens/             # Screen components
-├── data/                # Data models and constants
-├── storage/             # Local storage utilities
-├── constants/           # App-wide constants
-├── hooks/               # Custom React hooks
-└── assets/              # Images and other static files
-```
 
-## 🛠️ Technology Stack
+3. Review the generated files in [drizzle](drizzle)
+4. Restart the Expo app so the new migration bundle is picked up
 
-- **Framework**: React Native with Expo
-- **Routing**: Expo Router
-- **Navigation**: React Navigation Stack Navigator
-- **Language**: TypeScript
-- **Gesture Handling**: React Native Gesture Handler
-- **Code Quality**: ESLint & Prettier
-
-## 📝 Code Quality
-
-### Linting
-
-Run ESLint to check for code style issues:
+### Useful development commands
 
 ```bash
 npm run lint
-```
-
-### Formatting
-
-The project uses Prettier for automatic code formatting. Your IDE should format files on save if configured.
-
-To manually format all files:
-
-```bash
 npx prettier --write .
 ```
 
-## 📚 Learn More
+## Contributing
 
-- [Expo Documentation](https://docs.expo.dev/)
-- [React Native Documentation](https://reactnative.dev/)
-- [Expo Router Guide](https://docs.expo.dev/router/introduction/)
-- [React Navigation Documentation](https://reactnavigation.org/)
+1. Create a feature branch
+2. Make your changes
+3. Run linting and type checks
+4. Open a pull request with a clear summary of the changes
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
