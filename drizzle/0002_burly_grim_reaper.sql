@@ -1,0 +1,1 @@
+ALTER TABLE `gardens` ADD `default_soil_id` text REFERENCES soil(id);

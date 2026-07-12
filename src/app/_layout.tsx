@@ -1,12 +1,20 @@
 import { db, nativeDb } from '@/db/client';
 import migrations from '@/db/migrations';
+import { seedSoil } from '@/db/seed/seedSoil';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 import { Stack } from 'expo-router';
+import { useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 export default () => {
   const { success, error } = useMigrations(db, migrations);
+
+  useEffect(() => {
+    if (success) {
+      seedSoil();
+    }
+  }, [success]);
 
   // Enable Drizzle Studio in dev via plugin hook
   if (__DEV__) {

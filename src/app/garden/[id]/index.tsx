@@ -4,26 +4,19 @@ import { useLocalSearchParams } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function ViewGarden() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { garden } = useGetGarden(id);
+  const { id } = useLocalSearchParams<{ id: string | string[] }>();
+  const normalizedId = Array.isArray(id) ? id[0] : id;
+  const garden = useGetGarden(normalizedId ?? '');
 
   if (!garden) {
     return (
       <View>
-        <Text>Loading...</Text>
+        <Text>Garden not found.</Text>
       </View>
     );
   }
 
   const { units, width, length } = garden;
-
-  if (!width || !length || !units) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.page}>

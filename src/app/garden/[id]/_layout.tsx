@@ -3,7 +3,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 
 export default () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { garden } = useGetGarden(id);
+  const garden = useGetGarden(id);
 
   return (
     <Stack>

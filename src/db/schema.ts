@@ -6,20 +6,21 @@ export const gardens = sqliteTable('gardens', {
   units: text('units').notNull(),
   width: real('width').notNull(),
   length: real('length').notNull(),
+  default_soil_id: text('default_soil_id')
+    .notNull()
+    .references(() => soil.id),
   created_at: text('created_at').notNull(),
-});
-
-export const soil = sqliteTable('soil', {
-  id: text('id').primaryKey(),
-  name: text('name').notNull(),
-  description: text('description'),
-  ph: real('ph'),
 });
 
 export const garden_cells = sqliteTable('garden_cells', {
   id: text('id').primaryKey(),
-  garden_id: text('garden_id').notNull(),
-  x: integer('x').notNull(),
-  y: integer('y').notNull(),
-  soil_id: text('soil_id'),
+  garden_id: text('garden_id').references(() => gardens.id),
+  coord_x: integer('coord_x').notNull(),
+  coord_y: integer('coord_y').notNull(),
+  soil_id: text('soil_id').references(() => soil.id),
+});
+
+export const soil = sqliteTable('soil', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull().unique(),
 });

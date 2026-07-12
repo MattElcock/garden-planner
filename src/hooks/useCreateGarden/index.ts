@@ -7,6 +7,7 @@ interface CreateGardenInput {
   units: 'meters' | 'feet';
   width: number;
   length: number;
+  soilType: string;
 }
 
 const useCreateGarden = () => {
@@ -14,7 +15,6 @@ const useCreateGarden = () => {
     const id = Crypto.randomUUID();
     const createdAt = new Date().toISOString();
 
-    // Insert using Drizzle
     db.insert(gardens)
       .values({
         id,
@@ -22,13 +22,10 @@ const useCreateGarden = () => {
         units: data.units,
         width: data.width,
         length: data.length,
+        default_soil_id: data.soilType,
         created_at: createdAt,
       })
       .run();
-
-    console.info(
-      `Garden created with ID: ${id}, Name: ${data.name}, Units: ${data.units}, Width: ${data.width}, Length: ${data.length}, Created At: ${createdAt}`
-    );
 
     return id;
   };

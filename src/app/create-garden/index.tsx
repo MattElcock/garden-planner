@@ -1,6 +1,8 @@
 import { Input } from '@/design-system/components/Input';
+import { RadioGroup } from '@/design-system/components/RadioGroup';
 import { SplitToggle } from '@/design-system/components/SplitToggle';
 import { useCreateGarden } from '@/hooks/useCreateGarden';
+import { useListSoilTypes } from '@/hooks/useListSoilTypes';
 import { useRouter } from 'expo-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Button, StyleSheet, View } from 'react-native';
@@ -10,10 +12,12 @@ interface FormData {
   units: 'meters' | 'feet';
   length: number;
   width: number;
+  soilType: string;
 }
 
 export default function CreateGarden() {
   const router = useRouter();
+  const { soilTypes } = useListSoilTypes();
 
   const methods = useForm<FormData>();
   const { execute } = useCreateGarden();
@@ -24,6 +28,7 @@ export default function CreateGarden() {
       units: data.units,
       width: data.width,
       length: data.length,
+      soilType: data.soilType,
     });
 
     router.push(`/garden/${gardenId}`);
@@ -59,6 +64,15 @@ export default function CreateGarden() {
             required: 'Required',
             validate: (value) => !isNaN(Number(value)) || 'Width must be a number',
           }}
+        />
+        <RadioGroup
+          name="soilType"
+          label="Soil Type"
+          rules={{ required: 'Required' }}
+          options={soilTypes.map((soil) => ({
+            label: soil.name,
+            value: soil.id,
+          }))}
         />
         <Button
           title="Create Garden"

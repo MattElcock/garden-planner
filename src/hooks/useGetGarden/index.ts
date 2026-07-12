@@ -1,35 +1,47 @@
 import { db } from '@/db/client';
-import { gardens } from '@/db/schema';
+import { gardens, soil } from '@/db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { eq } from 'drizzle-orm/sql';
-import { useMemo } from 'react';
 
 interface Garden {
   id: string;
   name: string;
-  units: 'meters' | 'feet';
+  units: string;
   width: number;
   length: number;
+  defaultSoil: string;
   createdAt: Date;
 }
 
-const useGetGarden = (id: string) => {
-  const { data: row } = useLiveQuery(db.select().from(gardens).where(eq(gardens.id, id)).limit(1));
+const useGetGarden = (gardenId: string): Garden | null => {
+  const { data = [] } = useLiveQuery(
+    db
+      .select()
+      .from(gardens)
+      .where(eq(gardens.id, gardenId))
+      .leftJoin(soil, eq(gardens.default_soil_id, soil.id))
+      .limit(1)
+  );
 
-  const garden = useMemo(() => {
-    if (!row || row.length === 0) return undefined;
-    const g: any = row[0];
-    return {
-      id: g.id,
-      name: g.name,
-      units: g.units,
-      width: g.width,
-      length: g.length,
-      createdAt: new Date(g.created_at),
-    } as Garden;
-  }, [row]);
+  if (data.length === 0) {
+    return null;
+  }
 
-  return { garden };
+  const { gardens: garden, soil: defaultSoil } = data[0];
+
+  if (!defaultSoil) {
+    return null;
+  }
+
+  return {
+    id: garden.id,
+    name: garden.name,
+    units: garden.units,
+    width: Number(garden.width),
+    length: Number(garden.length),
+    defaultSoil: defaultSoil.name,
+    createdAt: new Date(garden.created_at),
+  };
 };
 
 export { useGetGarden };
