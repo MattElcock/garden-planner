@@ -30,15 +30,16 @@ const createGarden = (data: CreateGardenInput) => {
 };
 
 const createCells = (gardenId: string, width: number, length: number, soilType: string) => {
-  for (let x = 0; x < width; x++) {
-    for (let y = 0; y < length; y++) {
+  for (let coordY = 0; coordY < length; coordY++) {
+    for (let coordX = 0; coordX < width; coordX++) {
       const id = Crypto.randomUUID();
+
       db.insert(garden_cells)
         .values({
           id,
           garden_id: gardenId,
-          coord_x: x,
-          coord_y: y,
+          coord_x: coordX,
+          coord_y: coordY,
           soil_id: soilType,
         })
         .run();

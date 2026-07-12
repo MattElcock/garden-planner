@@ -14,10 +14,14 @@ export const gardens = sqliteTable('gardens', {
 
 export const garden_cells = sqliteTable('garden_cells', {
   id: text('id').primaryKey(),
-  garden_id: text('garden_id').references(() => gardens.id),
+  garden_id: text('garden_id')
+    .notNull()
+    .references(() => gardens.id),
   coord_x: integer('coord_x').notNull(),
   coord_y: integer('coord_y').notNull(),
-  soil_id: text('soil_id').references(() => soil.id),
+  soil_id: text('soil_id')
+    .notNull()
+    .references(() => soil.id),
 });
 
 export const soil = sqliteTable('soil', {

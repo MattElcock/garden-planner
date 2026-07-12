@@ -1,29 +1,32 @@
 import { StyleSheet, View } from 'react-native';
+import { GardenCell } from './GardenCell';
 
 interface GardenGridProps {
+  id: string;
   width: number;
   length: number;
 }
 
-const GardenGrid = ({ width, length }: GardenGridProps) => {
-  const rows = new Array(Math.ceil(length)).fill(0);
-  const columns = new Array(Math.ceil(width)).fill(0);
+const GardenGrid = ({ id, width, length }: GardenGridProps) => {
+  const rowCount = new Array(Math.ceil(length)).fill(0);
+  const colCount = new Array(Math.ceil(width)).fill(0);
 
   return (
     <View style={styles.grid}>
-      {rows.map((_, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {columns.map((_, colIndex) => (
-            <Cell key={`${rowIndex}-${colIndex}`} />
+      {rowCount.map((_, yIndex) => (
+        <View key={yIndex} style={styles.row}>
+          {colCount.map((_, xIndex) => (
+            <GardenCell
+              key={`${xIndex}-${yIndex}`}
+              gardenId={id}
+              coord_x={xIndex}
+              coord_y={yIndex}
+            />
           ))}
         </View>
       ))}
     </View>
   );
-};
-
-const Cell = () => {
-  return <View style={styles.cell} />;
 };
 
 const styles = StyleSheet.create({
@@ -39,12 +42,6 @@ const styles = StyleSheet.create({
   grid: {
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    borderColor: 'black',
-  },
-  cell: {
-    flex: 1,
-    aspectRatio: 1,
-    borderLeftWidth: 1,
     borderColor: 'black',
   },
 });
