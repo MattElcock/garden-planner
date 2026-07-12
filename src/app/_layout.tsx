@@ -1,8 +1,8 @@
-import { Stack } from 'expo-router';
-import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { db, nativeDb } from '@/db/client';
 import migrations from '@/db/migrations';
+import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
+import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
+import { Stack } from 'expo-router';
 import { Text, View } from 'react-native';
 
 export default () => {

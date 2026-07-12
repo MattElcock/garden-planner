@@ -1,5 +1,5 @@
-import { openDatabaseSync } from 'expo-sqlite';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
+import { openDatabaseSync } from 'expo-sqlite';
 
 // Open a synchronous Expo SQLite database with change listeners enabled
 export const nativeDb = openDatabaseSync('garden.db', { enableChangeListener: true });
