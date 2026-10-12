@@ -3,11 +3,12 @@ import { GardenCell } from './GardenCell';
 
 interface GardenGridProps {
   id: string;
+  defaultSoilId: string;
   width: number;
   length: number;
 }
 
-const GardenGrid = ({ id, width, length }: GardenGridProps) => {
+const GardenGrid = ({ id, defaultSoilId, width, length }: GardenGridProps) => {
   const rowCount = new Array(Math.ceil(length)).fill(0);
   const colCount = new Array(Math.ceil(width)).fill(0);
 
@@ -19,6 +20,7 @@ const GardenGrid = ({ id, width, length }: GardenGridProps) => {
             <GardenCell
               key={`${xIndex}-${yIndex}`}
               gardenId={id}
+              defaultSoilId={defaultSoilId}
               coord_x={xIndex}
               coord_y={yIndex}
             />

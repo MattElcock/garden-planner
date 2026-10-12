@@ -24,7 +24,12 @@ export default function ViewGarden() {
       <Text>
         Garden size: {width} x {length} {units}
       </Text>
-      <GardenGrid id={garden.id} width={width} length={length} />
+      <GardenGrid
+        id={garden.id}
+        defaultSoilId={garden.defaultSoilId}
+        width={width}
+        length={length}
+      />
     </View>
   );
 }

@@ -2,7 +2,9 @@ import { fontSizes, textColours } from '@/design-system/styles/typography';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { ActiveTool, RootTool } from './types';
+import { setActiveTool, useActiveTool } from './activeToolStore';
+import { SoilPicker } from './SoilPicker';
+import type { RootTool } from './types';
 
 const ROOT_TOOLS: { root: RootTool; label: string }[] = [
   { root: 'soil', label: 'Soil' },
@@ -17,9 +19,9 @@ const ACTIVE_COLOUR = '#4CAF50';
 type Panel = 'root' | RootTool;
 
 const ToolsMenu = () => {
+  const activeTool = useActiveTool();
   const [isOpen, setIsOpen] = useState(false);
   const [panel, setPanel] = useState<Panel>('root');
-  const [activeTool, setActiveTool] = useState<ActiveTool | null>(null);
 
   const openSheet = () => {
     setPanel(activeTool?.root ?? 'root');
@@ -53,22 +55,35 @@ const ToolsMenu = () => {
   );
 
   const renderSubMenu = (root: RootTool) => {
-    const isActive = activeTool?.root === root && activeTool?.option === PLACEHOLDER_OPTION;
     const rootLabel = ROOT_TOOLS.find((t) => t.root === root)?.label;
+    const activeOption = activeTool?.root === root ? activeTool.option : null;
+
     return (
       <View style={styles.list}>
         <Pressable onPress={() => setPanel('root')} hitSlop={8} style={styles.back}>
           <Text style={styles.backLabel}>‹ Back</Text>
         </Pressable>
         <Text style={styles.title}>{rootLabel}</Text>
-        <Pressable
-          onPress={() => selectOption(root, PLACEHOLDER_OPTION)}
-          style={[styles.row, isActive && styles.rowActive]}
-        >
-          <Text style={[styles.rowLabel, isActive && styles.rowLabelActive]}>
-            {PLACEHOLDER_LABEL}
-          </Text>
-        </Pressable>
+        {root === 'soil' ? (
+          <SoilPicker
+            activeOption={activeOption}
+            onSelect={(option) => selectOption('soil', option)}
+          />
+        ) : (
+          <Pressable
+            onPress={() => selectOption(root, PLACEHOLDER_OPTION)}
+            style={[styles.row, activeOption === PLACEHOLDER_OPTION && styles.rowActive]}
+          >
+            <Text
+              style={[
+                styles.rowLabel,
+                activeOption === PLACEHOLDER_OPTION && styles.rowLabelActive,
+              ]}
+            >
+              {PLACEHOLDER_LABEL}
+            </Text>
+          </Pressable>
+        )}
       </View>
     );
   };

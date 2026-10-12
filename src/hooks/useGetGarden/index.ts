@@ -10,6 +10,7 @@ interface Garden {
   width: number;
   length: number;
   defaultSoil: string;
+  defaultSoilId: string;
   createdAt: Date;
 }
 
@@ -40,6 +41,7 @@ const useGetGarden = (gardenId: string): Garden | null => {
     width: Number(garden.width),
     length: Number(garden.length),
     defaultSoil: defaultSoil.name,
+    defaultSoilId: defaultSoil.id,
     createdAt: new Date(garden.created_at),
   };
 };
