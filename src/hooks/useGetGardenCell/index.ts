@@ -1,9 +1,14 @@
 import { db } from '@/db/client';
-import { garden_cells, soil } from '@/db/schema';
+import { cover_types, garden_cells, soil } from '@/db/schema';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 import { and, eq } from 'drizzle-orm/sql';
 
 interface Soil {
+  id: string;
+  name: string;
+}
+
+interface Cover {
   id: string;
   name: string;
 }
@@ -14,6 +19,7 @@ interface GardenCell {
   coordX: number;
   coordY: number;
   soil: Soil;
+  cover: Cover | null;
 }
 
 const useGetGardenCell = (
@@ -33,6 +39,7 @@ const useGetGardenCell = (
         )
       )
       .leftJoin(soil, eq(soil.id, garden_cells.soil_id))
+      .leftJoin(cover_types, eq(cover_types.id, garden_cells.cover_id))
       .limit(1)
   );
 
@@ -40,7 +47,7 @@ const useGetGardenCell = (
     return null;
   }
 
-  const { garden_cells: cell, soil: soilType } = data[0];
+  const { garden_cells: cell, soil: soilType, cover_types: coverType } = data[0];
 
   if (!soilType) {
     return null;
@@ -55,6 +62,7 @@ const useGetGardenCell = (
       id: soilType.id,
       name: soilType.name,
     },
+    cover: coverType ? { id: coverType.id, name: coverType.name } : null,
   };
 };
 

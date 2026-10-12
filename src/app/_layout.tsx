@@ -1,5 +1,6 @@
 import { db, nativeDb } from '@/db/client';
 import migrations from '@/db/migrations';
+import { seedCoverTypes } from '@/db/seed/seedCoverTypes';
 import { seedSoil } from '@/db/seed/seedSoil';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
@@ -13,6 +14,7 @@ export default () => {
   useEffect(() => {
     if (success) {
       seedSoil();
+      seedCoverTypes();
     }
   }, [success]);
 

@@ -22,9 +22,15 @@ export const garden_cells = sqliteTable('garden_cells', {
   soil_id: text('soil_id')
     .notNull()
     .references(() => soil.id),
+  cover_id: text('cover_id').references(() => cover_types.id),
 });
 
 export const soil = sqliteTable('soil', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull().unique(),
+});
+
+export const cover_types = sqliteTable('cover_types', {
   id: text('id').primaryKey(),
   name: text('name').notNull().unique(),
 });

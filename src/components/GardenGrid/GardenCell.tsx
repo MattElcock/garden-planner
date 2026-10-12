@@ -1,8 +1,10 @@
 import { useActiveTool } from '@/components/ToolsMenu/activeToolStore';
 import { ERASER_OPTION } from '@/components/ToolsMenu/SoilPicker';
 import { useGetGardenCell } from '@/hooks/useGetGardenCell';
+import { useUpdateCellCover } from '@/hooks/useUpdateCellCover';
 import { useUpdateCellSoil } from '@/hooks/useUpdateCellSoil';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { coverColours } from './coverColours';
 import { soilColours } from './soilColours';
 
 interface GardenCellProps {
@@ -16,25 +18,27 @@ const GardenCell = ({ gardenId, defaultSoilId, coord_x, coord_y }: GardenCellPro
   const cell = useGetGardenCell(gardenId, coord_x, coord_y);
   const activeTool = useActiveTool();
   const { execute: updateCellSoil } = useUpdateCellSoil();
+  const { execute: updateCellCover } = useUpdateCellCover();
 
   if (!cell) {
     return <View style={styles.cell} />;
   }
 
   const handlePress = () => {
-    if (activeTool?.root !== 'soil') {
+    if (activeTool?.root === 'soil') {
+      const nextSoilId = activeTool.option === ERASER_OPTION ? defaultSoilId : activeTool.option;
+      updateCellSoil(cell.id, nextSoilId);
       return;
     }
-    const nextSoilId = activeTool.option === ERASER_OPTION ? defaultSoilId : activeTool.option;
-    updateCellSoil(cell.id, nextSoilId);
+    if (activeTool?.root === 'cover') {
+      const nextCoverId = activeTool.option === ERASER_OPTION ? null : activeTool.option;
+      updateCellCover(cell.id, nextCoverId);
+    }
   };
 
-  return (
-    <Pressable
-      onPress={handlePress}
-      style={[styles.cell, { backgroundColor: soilColours[cell.soil.id] }]}
-    />
-  );
+  const backgroundColor = cell.cover ? coverColours[cell.cover.id] : soilColours[cell.soil.id];
+
+  return <Pressable onPress={handlePress} style={[styles.cell, { backgroundColor }]} />;
 };
 
 const styles = StyleSheet.create({

@@ -3,6 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { setActiveTool, useActiveTool } from './activeToolStore';
+import { CoverPicker } from './CoverPicker';
 import { SoilPicker } from './SoilPicker';
 import type { RootTool } from './types';
 
@@ -68,6 +69,11 @@ const ToolsMenu = () => {
           <SoilPicker
             activeOption={activeOption}
             onSelect={(option) => selectOption('soil', option)}
+          />
+        ) : root === 'cover' ? (
+          <CoverPicker
+            activeOption={activeOption}
+            onSelect={(option) => selectOption('cover', option)}
           />
         ) : (
           <Pressable
